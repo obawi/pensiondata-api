@@ -1,5 +1,7 @@
 # Pension Data API
 
+[![pipeline status](https://gitlab.com/obawi/pensiondata-api/badges/master/pipeline.svg)](https://gitlab.com/obawi/pensiondata-api/-/commits/master)
+
 The Pension Data API lets you easily access information and quotes about pension funds with tax benefits available in Belgium and Luxembourg.
 
 This project is the REST API behind [api.pensiondata.eu](https://api.pensiondata.eu) built using Go and PostgreSQL.
