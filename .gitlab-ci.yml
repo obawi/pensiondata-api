@@ -1,0 +1,36 @@
+stages:
+  - build
+  - deploy
+  
+build:
+  image: golang:1.14-buster
+  stage: build
+  variables:
+    BIN_NAME: pensiondata-api
+    ARTIFACTS_DIR: artifacts
+  before_script:
+    - apt-get update && apt-get upgrade
+    - apt-get install git
+  script:
+    - cd ${CI_PROJECT_DIR}/
+    - GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o artifacts/pensiondata-api
+  artifacts:
+    paths:
+      - artifacts
+
+deploy:
+  image: alpine:latest
+  stage: deploy
+  environment: Production
+  dependencies:
+    - build
+  only:
+    - master
+  before_script:
+    - apk update && apk upgrade
+    - apk add --no-cache openssh rsync sshpass
+    - mkdir ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - 'sshpass -p "${ALWAYSDATA_RSYNC_PASSWORD}" rsync -vz --progress artifacts/pensiondata-api ${ALWAYSDATA_RSYNC_USER}@${ALWAYSDATA_RSYNC_HOST}:'

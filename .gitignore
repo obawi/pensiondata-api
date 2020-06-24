@@ -1,0 +1,7 @@
+.env
+.idea
+.history/
+.vscode/
+Godeps/
+vendor/
+t
