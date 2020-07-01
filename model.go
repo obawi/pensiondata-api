@@ -42,7 +42,7 @@ func NewPublicFund(fund Fund) PublicFund {
 
 // PublicQuote is Quote's representation to be returned by the API
 type PublicQuote struct {
-	Date  string          `json:"date"`
+	Date  string  `json:"date"`
 	Price float64 `json:"price"`
 }
 

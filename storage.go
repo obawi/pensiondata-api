@@ -2,6 +2,7 @@ package main
 
 import "errors"
 
+// ErrNotFound is returned when a resource was not found
 var ErrNotFound = errors.New("resource not found")
 
 // Storage is an interface providing the available operations on a storage
