@@ -1,12 +1,12 @@
 package main
 
 type MockStore struct {
-	ListFundsFn func() ([]Fund, error)
-	GetFundByIsinFn func(string) (Fund, error)
-	ListQuotesFn func(string) ([]Quote, error)
+	ListFundsFn      func() ([]Fund, error)
+	GetFundByIsinFn  func(string) (Fund, error)
+	ListQuotesFn     func(string) ([]Quote, error)
 	GetQuoteByDateFn func(string, string) (Quote, error)
 	GetLatestQuoteFn func(string) (Quote, error)
-	CreateQuoteFn func(string, ScraperCreateQuote) (Quote, error)
+	CreateQuoteFn    func(string, ScraperCreateQuote) (Quote, error)
 }
 
 func (s MockStore) ListFunds() ([]Fund, error) {
