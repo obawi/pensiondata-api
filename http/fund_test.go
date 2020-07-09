@@ -1,0 +1,175 @@
+package http
+
+import (
+	"errors"
+	"gihtub.com/obawi/pensiondata-api"
+	"github.com/gin-gonic/gin"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+)
+
+const CONTENT_TYPE_JSON = "application/json; charset=utf-8"
+
+func TestGetFunds(t *testing.T) {
+	t.Run("return list of funds successfully", func(t *testing.T) {
+		gin.SetMode(gin.TestMode)
+		r := gin.Default()
+
+		s := pensiondata.FundServiceMock{}
+		s.GetFundsFn = func() ([]pensiondata.PublicFund, error) {
+			return testPublicFunds(), nil
+		}
+
+		NewFundHandler(r, s)
+
+		// Create a response recorder
+		resp := httptest.NewRecorder()
+
+		req, _ := http.NewRequest(http.MethodGet, "/funds", nil)
+
+		r.ServeHTTP(resp, req)
+
+		if http.StatusOK != resp.Code {
+			t.Errorf("want %d, got %d", http.StatusOK, resp.Code)
+		}
+		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		}
+	})
+
+	t.Run("return internal error", func(t *testing.T) {
+		gin.SetMode(gin.TestMode)
+		r := gin.Default()
+
+		s := pensiondata.FundServiceMock{}
+		s.GetFundsFn = func() ([]pensiondata.PublicFund, error) {
+			return []pensiondata.PublicFund{}, errors.New("internal error")
+		}
+
+		NewFundHandler(r, s)
+
+		// Create a response recorder
+		resp := httptest.NewRecorder()
+
+		req, _ := http.NewRequest(http.MethodGet, "/funds", nil)
+
+		r.ServeHTTP(resp, req)
+
+		if http.StatusInternalServerError != resp.Code {
+			t.Errorf("want %d, got %d", http.StatusInternalServerError, resp.Code)
+		}
+		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		}
+	})
+}
+
+func TestGetFundByISIN(t *testing.T) {
+	t.Run("return fund successfully", func(t *testing.T) {
+		gin.SetMode(gin.TestMode)
+		r := gin.Default()
+
+		s := pensiondata.FundServiceMock{}
+		s.GetFundByISINFn = func(isin string) (pensiondata.PublicFund, error) {
+			return testPublicFund(), nil
+		}
+
+		NewFundHandler(r, s)
+
+		// Create a response recorder
+		resp := httptest.NewRecorder()
+
+		req, _ := http.NewRequest(http.MethodGet, "/funds/BE123", nil)
+
+		r.ServeHTTP(resp, req)
+
+		if http.StatusOK != resp.Code {
+			t.Errorf("want %d, got %d", http.StatusOK, resp.Code)
+		}
+		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		}
+	})
+
+	t.Run("return not found error", func(t *testing.T) {
+		gin.SetMode(gin.TestMode)
+		r := gin.Default()
+
+		s := pensiondata.FundServiceMock{}
+		s.GetFundByISINFn = func(isin string) (pensiondata.PublicFund, error) {
+			return pensiondata.PublicFund{}, pensiondata.ErrFundNotFound
+		}
+
+		NewFundHandler(r, s)
+
+		// Create a response recorder
+		resp := httptest.NewRecorder()
+
+		req, _ := http.NewRequest(http.MethodGet, "/funds/BE123", nil)
+
+		r.ServeHTTP(resp, req)
+
+		if http.StatusNotFound != resp.Code {
+			t.Errorf("want %d, got %d", http.StatusNotFound, resp.Code)
+		}
+		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		}
+	})
+
+	t.Run("return internal error", func(t *testing.T) {
+		gin.SetMode(gin.TestMode)
+		r := gin.Default()
+
+		s := pensiondata.FundServiceMock{}
+		s.GetFundByISINFn = func(isin string) (pensiondata.PublicFund, error) {
+			return pensiondata.PublicFund{}, errors.New("internal error")
+		}
+
+		NewFundHandler(r, s)
+
+		// Create a response recorder
+		resp := httptest.NewRecorder()
+
+		req, _ := http.NewRequest(http.MethodGet, "/funds/BE123", nil)
+
+		r.ServeHTTP(resp, req)
+
+		if http.StatusInternalServerError != resp.Code {
+			t.Errorf("want %d, got %d", http.StatusInternalServerError, resp.Code)
+		}
+		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		}
+	})
+}
+
+func testPublicFund() pensiondata.PublicFund {
+	return pensiondata.PublicFund{
+		Isin:       "BE123",
+		Name:       "First Fund",
+		Bank:       "Banka",
+		LaunchDate: "2020-06-27",
+		Currency:   "EUR",
+	}
+}
+
+func testPublicFunds() []pensiondata.PublicFund {
+	return []pensiondata.PublicFund{
+		{
+			Isin:       "BE123",
+			Name:       "First Fund",
+			Bank:       "Banka",
+			LaunchDate: "2020-06-27",
+			Currency:   "EUR",
+		},
+		{
+			Isin:       "LU123",
+			Name:       "Second Fund",
+			Bank:       "Banko",
+			LaunchDate: "2020-06-27",
+			Currency:   "EUR",
+		},
+	}
+}
