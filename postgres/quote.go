@@ -2,7 +2,7 @@ package postgres
 
 import (
 	"database/sql"
-	"gihtub.com/obawi/pensiondata-api"
+	"github.com/obawi/pensiondata-api"
 )
 
 // QuoteRepository is the struct used to implement the pensiondata.QuoteRepository interface for Postgres

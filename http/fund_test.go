@@ -2,7 +2,7 @@ package http
 
 import (
 	"errors"
-	"gihtub.com/obawi/pensiondata-api"
+	"github.com/obawi/pensiondata-api"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"

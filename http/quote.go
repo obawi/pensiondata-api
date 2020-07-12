@@ -2,7 +2,7 @@ package http
 
 import (
 	"fmt"
-	"gihtub.com/obawi/pensiondata-api"
+	"github.com/obawi/pensiondata-api"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"

@@ -1,4 +1,4 @@
-module gihtub.com/obawi/pensiondata-api
+module github.com/obawi/pensiondata-api
 
 go 1.14
 
