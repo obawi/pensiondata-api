@@ -1,12 +1,12 @@
 package main
 
 import (
-	"gihtub.com/obawi/pensiondata-api/http"
-	"gihtub.com/obawi/pensiondata-api/postgres"
+	"github.com/obawi/pensiondata-api/http"
+	"github.com/obawi/pensiondata-api/postgres"
 	"log"
 	"os"
 
-	"gihtub.com/obawi/pensiondata-api"
+	"github.com/obawi/pensiondata-api"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )

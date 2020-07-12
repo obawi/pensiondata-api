@@ -2,7 +2,7 @@ package postgres
 
 import (
 	"database/sql"
-	"gihtub.com/obawi/pensiondata-api"
+	"github.com/obawi/pensiondata-api"
 )
 
 // FundRepository is the struct used to implement the pensiondata.FundRepository interface for Postgres

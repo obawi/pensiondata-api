@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"gihtub.com/obawi/pensiondata-api"
+	"github.com/obawi/pensiondata-api"
 	"github.com/gin-gonic/gin"
 	"github.com/shopspring/decimal"
 	"net/http"
