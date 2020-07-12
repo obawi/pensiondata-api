@@ -51,7 +51,7 @@ func (s QuoteServiceMock) GetQuotes(isin string) ([]PublicQuote, error) {
 	return s.GetQuotesFn(isin)
 }
 
-// GetQuote mock
+// CreateQuote mock
 func (s QuoteServiceMock) CreateQuote(isin string, scraperCreateQuote ScraperCreateQuote) (PublicQuote, error) {
 	return s.CreateQuoteFn(isin, scraperCreateQuote)
 }
