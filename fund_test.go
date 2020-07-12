@@ -104,8 +104,20 @@ func TestNewPublicFund(t *testing.T) {
 
 		got := newPublicFund(want)
 
-		if !reflect.DeepEqual(newPublicFund(want), got) {
-			t.Errorf("want %v, got %v", newPublicFund(want), got)
+		if want.Isin != got.Isin {
+			t.Errorf("want %s, got %s", want.Isin, got.Isin)
+		}
+		if want.Name != got.Name {
+			t.Errorf("want %s, got %s", want.Name, got.Name)
+		}
+		if want.Bank != got.Bank {
+			t.Errorf("want %s, got %s", want.Bank, got.Bank)
+		}
+		if want.LaunchDate.Format("2006-01-02") != got.LaunchDate {
+			t.Errorf("want %s, got -%s", want.LaunchDate.Format("2006-01-02"), got.LaunchDate)
+		}
+		if want.Currency != got.Currency {
+			t.Errorf("want %s, got %s", want.Currency, got.Currency)
 		}
 	})
 }

@@ -9,12 +9,13 @@ import (
 	"strings"
 )
 
+// QuoteHandler handle all the HTTP requests for Quote
 type QuoteHandler struct {
 	s pensiondata.QuoteService
 }
 
-// NewQuoteHandler return a new QuoteHandler and register routes
-func NewQuoteHandler(router *gin.Engine, service pensiondata.QuoteService) *QuoteHandler {
+// InitQuoteHandler initialize a new QuoteHandler and register routes
+func InitQuoteHandler(router *gin.Engine, service pensiondata.QuoteService) *QuoteHandler {
 	h := &QuoteHandler{s: service}
 
 	router.GET("/funds/:isin/quotes", h.GetQuotes())
@@ -24,7 +25,7 @@ func NewQuoteHandler(router *gin.Engine, service pensiondata.QuoteService) *Quot
 	return h
 }
 
-// ListQuotes return all available quotes for the given fund
+// ListQuotes return all quotes for the given fund
 func (h QuoteHandler) GetQuotes() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		isin := strings.ToUpper(context.Params.ByName("isin"))
@@ -48,7 +49,7 @@ func (h QuoteHandler) GetQuotes() gin.HandlerFunc {
 	}
 }
 
-// GetQuoteByDate return a quote for the given date
+// GetQuoteByDate return the quote for the given date
 func (h QuoteHandler) GetQuoteByDate() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		isin := strings.ToUpper(context.Params.ByName("isin"))

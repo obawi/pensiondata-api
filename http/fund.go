@@ -9,22 +9,18 @@ import (
 	"strings"
 )
 
-var internalErrorMessage = "An internal error occurred, please try again later. " +
-	"If the problem persists drop us a line at hello@pensiondata.eu"
-
+// FundHandler handle all the HTTP requests for Fund
 type FundHandler struct {
 	s pensiondata.FundService
 }
 
-// NewFundHandler return a new FundHandler and register routes
-func NewFundHandler(router *gin.Engine, service pensiondata.FundService) *FundHandler {
+// InitFundHandler initialize a new FundHandler and register routes
+func InitFundHandler(router *gin.Engine, service pensiondata.FundService) {
 	h := &FundHandler{s: service}
 
 	// setup routes
 	router.GET("/funds", h.GetFunds())
 	router.GET("/funds/:isin", h.GetFundByISIN())
-
-	return h
 }
 
 // GetFunds return all funds
@@ -43,7 +39,7 @@ func (h FundHandler) GetFunds() gin.HandlerFunc {
 	}
 }
 
-// GetFundByISIN return a fund for the given isin
+// GetFundByISIN return the fund for the given isin
 func (h FundHandler) GetFundByISIN() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		isin := strings.ToUpper(context.Params.ByName("isin"))

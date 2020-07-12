@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-const CONTENT_TYPE_JSON = "application/json; charset=utf-8"
+const contentTypeJson = "application/json; charset=utf-8"
 
 func TestGetFunds(t *testing.T) {
 	t.Run("return list of funds successfully", func(t *testing.T) {
@@ -21,7 +21,7 @@ func TestGetFunds(t *testing.T) {
 			return testPublicFunds(), nil
 		}
 
-		NewFundHandler(r, s)
+		InitFundHandler(r, s)
 
 		// Create a response recorder
 		resp := httptest.NewRecorder()
@@ -33,8 +33,8 @@ func TestGetFunds(t *testing.T) {
 		if http.StatusOK != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusOK, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -47,7 +47,7 @@ func TestGetFunds(t *testing.T) {
 			return []pensiondata.PublicFund{}, errors.New("internal error")
 		}
 
-		NewFundHandler(r, s)
+		InitFundHandler(r, s)
 
 		// Create a response recorder
 		resp := httptest.NewRecorder()
@@ -59,8 +59,8 @@ func TestGetFunds(t *testing.T) {
 		if http.StatusInternalServerError != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusInternalServerError, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 }
@@ -75,7 +75,7 @@ func TestGetFundByISIN(t *testing.T) {
 			return testPublicFund(), nil
 		}
 
-		NewFundHandler(r, s)
+		InitFundHandler(r, s)
 
 		// Create a response recorder
 		resp := httptest.NewRecorder()
@@ -87,8 +87,8 @@ func TestGetFundByISIN(t *testing.T) {
 		if http.StatusOK != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusOK, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -101,7 +101,7 @@ func TestGetFundByISIN(t *testing.T) {
 			return pensiondata.PublicFund{}, pensiondata.ErrFundNotFound
 		}
 
-		NewFundHandler(r, s)
+		InitFundHandler(r, s)
 
 		// Create a response recorder
 		resp := httptest.NewRecorder()
@@ -113,8 +113,8 @@ func TestGetFundByISIN(t *testing.T) {
 		if http.StatusNotFound != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusNotFound, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -127,7 +127,7 @@ func TestGetFundByISIN(t *testing.T) {
 			return pensiondata.PublicFund{}, errors.New("internal error")
 		}
 
-		NewFundHandler(r, s)
+		InitFundHandler(r, s)
 
 		// Create a response recorder
 		resp := httptest.NewRecorder()
@@ -139,8 +139,8 @@ func TestGetFundByISIN(t *testing.T) {
 		if http.StatusInternalServerError != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusInternalServerError, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 }

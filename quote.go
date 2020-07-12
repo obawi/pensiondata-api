@@ -11,6 +11,7 @@ type Quote struct {
 	Price decimal.Decimal
 }
 
+// QuoteRepository handle the data access operations on Quote
 type QuoteRepository interface {
 	FindByISINAndDate(string, string) (Quote, error)
 	FindByDateDesc(string) (Quote, error)
@@ -18,6 +19,7 @@ type QuoteRepository interface {
 	Create(string, Quote) (Quote, error)
 }
 
+// QuoteService handle the use cases for Quote
 type QuoteService interface {
 	GetQuote(string, string) (PublicQuote, error)
 	GetLatestQuote(string) (PublicQuote, error)
@@ -25,15 +27,18 @@ type QuoteService interface {
 	CreateQuote(string, ScraperCreateQuote) (PublicQuote, error)
 }
 
+// QuoteServiceImpl is the implementation of QuoteService
 type QuoteServiceImpl struct {
 	fundRepo  FundRepository
 	quoteRepo QuoteRepository
 }
 
-func NewQuoteService(fundRepo FundRepository, quoteRepo QuoteRepository) QuoteService {
+// NewQuoteService return a new, fully functional, implementation of QuoteService
+func NewQuoteService(fundRepo FundRepository, quoteRepo QuoteRepository) *QuoteServiceImpl {
 	return &QuoteServiceImpl{fundRepo: fundRepo, quoteRepo: quoteRepo}
 }
 
+// GetQuote return the quote for the given isin and date
 func (s QuoteServiceImpl) GetQuote(isin string, date string) (PublicQuote, error) {
 	if _, err := s.fundRepo.FindByISIN(isin); err != nil {
 		return PublicQuote{}, err
@@ -47,6 +52,7 @@ func (s QuoteServiceImpl) GetQuote(isin string, date string) (PublicQuote, error
 	return newPublicQuote(quote), nil
 }
 
+// GetLatestQuote return the latest (date desc) quote for the given isin
 func (s QuoteServiceImpl) GetLatestQuote(isin string) (PublicQuote, error) {
 	quote, err := s.quoteRepo.FindByDateDesc(isin)
 
@@ -57,6 +63,7 @@ func (s QuoteServiceImpl) GetLatestQuote(isin string) (PublicQuote, error) {
 	return newPublicQuote(quote), nil
 }
 
+// GetQuotes return all quotes for the given isin
 func (s QuoteServiceImpl) GetQuotes(isin string) ([]PublicQuote, error) {
 	if _, err := s.fundRepo.FindByISIN(isin); err != nil {
 		return []PublicQuote{}, err
@@ -75,6 +82,7 @@ func (s QuoteServiceImpl) GetQuotes(isin string) ([]PublicQuote, error) {
 	return publicQuotes, nil
 }
 
+// CreateQuote return the created quote for the given isin
 func (s QuoteServiceImpl) CreateQuote(isin string, scraperQuote ScraperCreateQuote) (PublicQuote, error) {
 	if _, err := s.fundRepo.FindByISIN(isin); err != nil {
 		return PublicQuote{}, err

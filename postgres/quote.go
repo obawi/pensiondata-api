@@ -11,11 +11,11 @@ type QuoteRepository struct {
 }
 
 // NewQuoteRepository return a new QuoteRepository for Postgres
-func NewQuoteRepository(db *sql.DB) pensiondata.QuoteRepository {
+func NewQuoteRepository(db *sql.DB) *QuoteRepository {
 	return &QuoteRepository{DB: db}
 }
 
-// FindByISINAndDate return a quote for the given fund isin and date
+// FindByISINAndDate return the quote for the given fund isin and date
 func (r QuoteRepository) FindByISINAndDate(isin, date string) (pensiondata.Quote, error) {
 	row := r.DB.QueryRow("SELECT date, price FROM quotes WHERE fund_isin = $1 AND DATE(date) = $2;", isin, date)
 
@@ -30,7 +30,7 @@ func (r QuoteRepository) FindByISINAndDate(isin, date string) (pensiondata.Quote
 	return quote, nil
 }
 
-// FindByDateDesc return a quote for the given isin order by date desc
+// FindByDateDesc return the quote for the given isin order by date desc
 func (r QuoteRepository) FindByDateDesc(isin string) (pensiondata.Quote, error) {
 	row := r.DB.QueryRow("SELECT date, price FROM quotes WHERE fund_isin = $1 ORDER BY date DESC LIMIT 1;", isin)
 
@@ -45,7 +45,7 @@ func (r QuoteRepository) FindByDateDesc(isin string) (pensiondata.Quote, error) 
 	return quote, nil
 }
 
-// FindAll return all the quotes for the given isin
+// FindAll return all quotes for the given isin
 func (r QuoteRepository) FindAll(isin string) ([]pensiondata.Quote, error) {
 	rows, err := r.DB.Query("SELECT date, price FROM quotes WHERE fund_isin = $1 ORDER BY date DESC;", isin)
 	if err != nil {

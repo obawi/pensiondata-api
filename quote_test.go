@@ -271,8 +271,11 @@ func TestNewPublicQuote(t *testing.T) {
 
 		got := newPublicQuote(want)
 
-		if !reflect.DeepEqual(newPublicQuote(want), got) {
-			t.Errorf("want %v, got %v", newPublicQuote(want), got)
+		if want.Date.Format("2006-01-02") != got.Date {
+			t.Errorf("want %s, got %s", want.Date.Format("2006-01-02"), got.Date)
+		}
+		if !want.Price.Equal(decimal.NewFromFloat(got.Price)) {
+			t.Errorf("want %s, got %.2f", want.Price, got.Price)
 		}
 	})
 }

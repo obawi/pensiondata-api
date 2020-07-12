@@ -11,7 +11,7 @@ type FundRepository struct {
 }
 
 // NewFundRepository return a new FundRepository for Postgres
-func NewFundRepository(db *sql.DB) pensiondata.FundRepository {
+func NewFundRepository(db *sql.DB) *FundRepository {
 	return &FundRepository{DB: db}
 }
 
@@ -30,7 +30,7 @@ func (r FundRepository) FindByISIN(isin string) (pensiondata.Fund, error) {
 	return fund, nil
 }
 
-// FindAll return all the funds
+// FindAll return all funds
 func (r FundRepository) FindAll() ([]pensiondata.Fund, error) {
 	var funds []pensiondata.Fund
 	rows, err := r.DB.Query("SELECT isin, name, bank, launch_date, currency FROM funds ORDER BY name ASC;")

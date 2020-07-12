@@ -3,14 +3,13 @@ package http
 import (
 	"bytes"
 	"encoding/json"
-	// "bytes"
-	// "encoding/json"
 	"errors"
 	"gihtub.com/obawi/pensiondata-api"
 	"github.com/gin-gonic/gin"
 	"github.com/shopspring/decimal"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 )
 
@@ -24,7 +23,7 @@ func TestGetQuotes(t *testing.T) {
 			return testPublicQuotes(), nil
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -35,8 +34,8 @@ func TestGetQuotes(t *testing.T) {
 		if http.StatusOK != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusOK, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -49,7 +48,7 @@ func TestGetQuotes(t *testing.T) {
 			return []pensiondata.PublicQuote{}, pensiondata.ErrFundNotFound
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -60,8 +59,8 @@ func TestGetQuotes(t *testing.T) {
 		if http.StatusNotFound != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusNotFound, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -74,7 +73,7 @@ func TestGetQuotes(t *testing.T) {
 			return []pensiondata.PublicQuote{}, errors.New("internal error")
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -85,8 +84,8 @@ func TestGetQuotes(t *testing.T) {
 		if http.StatusInternalServerError != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusInternalServerError, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 }
@@ -101,7 +100,7 @@ func TestGetQuoteByDate(t *testing.T) {
 			return testPublicQuote(), nil
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -112,8 +111,8 @@ func TestGetQuoteByDate(t *testing.T) {
 		if http.StatusOK != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusOK, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -126,7 +125,7 @@ func TestGetQuoteByDate(t *testing.T) {
 			return pensiondata.PublicQuote{}, pensiondata.ErrFundNotFound
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -137,8 +136,8 @@ func TestGetQuoteByDate(t *testing.T) {
 		if http.StatusNotFound != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusNotFound, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -151,7 +150,7 @@ func TestGetQuoteByDate(t *testing.T) {
 			return pensiondata.PublicQuote{}, pensiondata.ErrQuoteNotFound
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -162,8 +161,8 @@ func TestGetQuoteByDate(t *testing.T) {
 		if http.StatusNotFound != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusNotFound, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -176,7 +175,7 @@ func TestGetQuoteByDate(t *testing.T) {
 			return pensiondata.PublicQuote{}, errors.New("internal error")
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -187,8 +186,8 @@ func TestGetQuoteByDate(t *testing.T) {
 		if http.StatusInternalServerError != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusInternalServerError, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 
@@ -201,7 +200,7 @@ func TestGetQuoteByDate(t *testing.T) {
 			return testPublicQuote(), nil
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -212,14 +211,15 @@ func TestGetQuoteByDate(t *testing.T) {
 		if http.StatusOK != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusOK, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
 	})
 }
 
 func TestCreateQuote(t *testing.T) {
 	t.Run("create quote successfully", func(t *testing.T) {
+		_ = os.Setenv("SCRAPER_KEY", "s3cr3t")
 		gin.SetMode(gin.TestMode)
 		r := gin.Default()
 
@@ -228,7 +228,7 @@ func TestCreateQuote(t *testing.T) {
 			return testPublicQuote(), nil
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -239,18 +239,21 @@ func TestCreateQuote(t *testing.T) {
 		jsonScraperCreateQuote, _ := json.Marshal(scraperCreateQuote)
 
 		req, _ := http.NewRequest("POST", "/funds/BE123/quotes", bytes.NewBuffer(jsonScraperCreateQuote))
+		req.Header.Add("SCRAPER-KEY", "s3cr3t")
 
 		r.ServeHTTP(resp, req)
 
 		if http.StatusCreated != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusCreated, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
+		_ = os.Unsetenv("SCRAPER_KEY")
 	})
 
 	t.Run("return bad request error for invalid quote JSON binding", func(t *testing.T) {
+		_ = os.Setenv("SCRAPER_KEY", "s3cr3t")
 		gin.SetMode(gin.TestMode)
 		r := gin.Default()
 
@@ -259,25 +262,28 @@ func TestCreateQuote(t *testing.T) {
 			return pensiondata.PublicQuote{}, nil
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
 		jsonScraperCreateQuote, _ := json.Marshal(false)
 
 		req, _ := http.NewRequest(http.MethodPost, "/funds/BE123/quotes", bytes.NewBuffer(jsonScraperCreateQuote))
+		req.Header.Add("SCRAPER-KEY", "s3cr3t")
 
 		r.ServeHTTP(resp, req)
 
 		if http.StatusBadRequest != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusBadRequest, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
+		_ = os.Unsetenv("SCRAPER_KEY")
 	})
 
 	t.Run("return not found error for fund", func(t *testing.T) {
+		_ = os.Setenv("SCRAPER_KEY", "s3cr3t")
 		gin.SetMode(gin.TestMode)
 		r := gin.Default()
 
@@ -286,7 +292,7 @@ func TestCreateQuote(t *testing.T) {
 			return pensiondata.PublicQuote{}, pensiondata.ErrFundNotFound
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -297,18 +303,21 @@ func TestCreateQuote(t *testing.T) {
 		jsonScraperCreateQuote, _ := json.Marshal(scraperCreateQuote)
 
 		req, _ := http.NewRequest("POST", "/funds/BE123/quotes", bytes.NewBuffer(jsonScraperCreateQuote))
+		req.Header.Add("SCRAPER-KEY", "s3cr3t")
 
 		r.ServeHTTP(resp, req)
 
 		if http.StatusNotFound != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusNotFound, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
+		_ = os.Unsetenv("SCRAPER_KEY")
 	})
 
 	t.Run("return internal error", func(t *testing.T) {
+		_ = os.Setenv("SCRAPER_KEY", "s3cr3t")
 		gin.SetMode(gin.TestMode)
 		r := gin.Default()
 
@@ -317,7 +326,7 @@ func TestCreateQuote(t *testing.T) {
 			return pensiondata.PublicQuote{}, errors.New("internal error")
 		}
 
-		NewQuoteHandler(r, quoteService)
+		InitQuoteHandler(r, quoteService)
 
 		resp := httptest.NewRecorder()
 
@@ -328,15 +337,17 @@ func TestCreateQuote(t *testing.T) {
 		jsonScraperCreateQuote, _ := json.Marshal(scraperCreateQuote)
 
 		req, _ := http.NewRequest("POST", "/funds/BE123/quotes", bytes.NewBuffer(jsonScraperCreateQuote))
+		req.Header.Add("SCRAPER-KEY", "s3cr3t")
 
 		r.ServeHTTP(resp, req)
 
 		if http.StatusInternalServerError != resp.Code {
 			t.Errorf("want %d, got %d", http.StatusInternalServerError, resp.Code)
 		}
-		if CONTENT_TYPE_JSON != resp.Header().Get("Content-Type") {
-			t.Errorf("want %s, got %s", CONTENT_TYPE_JSON, resp.Header().Get("Content-Type"))
+		if contentTypeJson != resp.Header().Get("Content-Type") {
+			t.Errorf("want %s, got %s", contentTypeJson, resp.Header().Get("Content-Type"))
 		}
+		_ = os.Unsetenv("SCRAPER_KEY")
 	})
 }
 
