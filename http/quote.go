@@ -25,7 +25,7 @@ func InitQuoteHandler(router *gin.Engine, service pensiondata.QuoteService) *Quo
 	return h
 }
 
-// ListQuotes return all quotes for the given fund
+// GetQuotes return all quotes for the given fund
 func (h QuoteHandler) GetQuotes() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		isin := strings.ToUpper(context.Params.ByName("isin"))
