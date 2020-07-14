@@ -177,7 +177,7 @@ func TestGetQuotes(t *testing.T) {
 
 func TestCreateQuote(t *testing.T) {
 	t.Run("create quote successfully", func(t *testing.T) {
-		want := ScraperCreateQuote{Date: "2020-06-27", Price: decimal.NewFromFloat(5.99)}
+		want := ScraperCreateQuote{Date: "2020-07-09T00:00:00+02:00", Price: decimal.NewFromFloat(5.99)}
 
 		fundRepo := FundRepositoryMock{}
 		fundRepo.FindByISINFn = func(isin string) (Fund, error) {
@@ -240,7 +240,7 @@ func TestCreateQuote(t *testing.T) {
 	})
 
 	t.Run("return error for quote", func(t *testing.T) {
-		want := ScraperCreateQuote{Date: "2020-06-27", Price: decimal.NewFromFloat(5.99)}
+		want := ScraperCreateQuote{Date: "2020-07-09T00:00:00+02:00", Price: decimal.NewFromFloat(5.99)}
 
 		fundRepo := FundRepositoryMock{}
 		fundRepo.FindByISINFn = func(isin string) (Fund, error) {
