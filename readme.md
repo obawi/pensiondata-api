@@ -1,6 +1,6 @@
 # Pension Data API
 
-![CI](https://github.com/obawi/pensiondata-api/workflows/CI/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/obawi/pensiondata-api)](https://goreportcard.com/report/github.com/obawi/pensiondata-api)
+![CI](https://github.com/obawi/pensiondata-api/workflows/CI/badge.svg) ![CD](https://github.com/obawi/pensiondata-api/workflows/CD/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/obawi/pensiondata-api)](https://goreportcard.com/report/github.com/obawi/pensiondata-api)
 
 The Pension Data API lets you easily access information and quotes about pension funds with tax benefits available in Belgium and Luxembourg.
 

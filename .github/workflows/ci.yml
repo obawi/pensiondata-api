@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build
-        run: go build -v .
+        run: go build -o pensiondata-api github.com/obawi/pensiondata-api/cmd/api
 
   test:
     name: Test
