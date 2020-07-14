@@ -1,0 +1,51 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Set up Go 1.14
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.14
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: GOOS=linux go build -ldflags "-s -w" -o pensiondata-api github.com/obawi/pensiondata-api/cmd/api
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: pensiondata-api
+          path: pensiondata-api
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: pensiondata-api
+
+      - name: Rsync
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -vz --progress
+          path: pensiondata-api
+          remote_path: ${{ secrets.REMOTE_PATH }}
+          remote_host: ${{ secrets.HOST_NAME }}
+          remote_user: ${{ secrets.HOST_USER }}
+          remote_key: ${{ secrets.HOST_KEY }}
