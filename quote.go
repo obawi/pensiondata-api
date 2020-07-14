@@ -88,7 +88,7 @@ func (s QuoteServiceImpl) CreateQuote(isin string, scraperQuote ScraperCreateQuo
 		return PublicQuote{}, err
 	}
 
-	date, err := time.Parse("2006-01-02", scraperQuote.Date)
+	date, err := time.Parse(time.RFC3339, scraperQuote.Date)
 	if err != nil {
 		return PublicQuote{}, err
 	}
