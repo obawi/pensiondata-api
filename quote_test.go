@@ -2,10 +2,11 @@ package pensiondata
 
 import (
 	"errors"
-	"github.com/shopspring/decimal"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 func TestGetQuote(t *testing.T) {

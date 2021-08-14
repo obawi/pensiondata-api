@@ -1,8 +1,9 @@
 package pensiondata
 
 import (
-	"github.com/shopspring/decimal"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 // Quote is Quote's representation in the database
