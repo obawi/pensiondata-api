@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/obawi/pensiondata-api"
-	"github.com/gin-gonic/gin"
-	"github.com/shopspring/decimal"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/obawi/pensiondata-api"
+	"github.com/shopspring/decimal"
 )
 
 func TestGetQuotes(t *testing.T) {

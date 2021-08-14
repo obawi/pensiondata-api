@@ -2,11 +2,12 @@ package http
 
 import (
 	"fmt"
-	"github.com/obawi/pensiondata-api"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/obawi/pensiondata-api"
 )
 
 // FundHandler handle all the HTTP requests for Fund

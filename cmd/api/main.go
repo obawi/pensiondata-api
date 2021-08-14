@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/obawi/pensiondata-api/http"
-	"github.com/obawi/pensiondata-api/postgres"
 	"log"
 	"os"
 
-	"github.com/obawi/pensiondata-api"
+	"github.com/obawi/pensiondata-api/http"
+	"github.com/obawi/pensiondata-api/postgres"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
+	"github.com/obawi/pensiondata-api"
 )
 
 func main() {
